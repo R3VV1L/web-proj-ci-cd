@@ -1,5 +1,5 @@
 name: GitHub Actions Demo
-run-name: ${{ github.actor }} project is building and testing
+run-name: ${{ github.actor }} project is building and testin
 on:
     push:
         branches: [master]
@@ -7,7 +7,7 @@ on:
         branches: [master]
 jobs:
     GitHub-Actions:
-        runs-on: fedora-latest
+        runs-on: [ubuntu-latest, windows-latest, macos-latest]
         strategy:
             matrix:
                 node-version: [18.x]
