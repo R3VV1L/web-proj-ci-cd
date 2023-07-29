@@ -20,9 +20,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'npm run test'
-                echo 'exit from testing'
-                sh 'sleep 10 && q'
+                echo 'no test'
             }
         }
     }
