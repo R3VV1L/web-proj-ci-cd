@@ -22,7 +22,7 @@ pipeline {
                 echo 'Testing...'
                 sh 'npm run test'
                 echo 'exit from testing'
-                sh 'q'
+                sh 'sleep 10 && q'
             }
         }
     }
