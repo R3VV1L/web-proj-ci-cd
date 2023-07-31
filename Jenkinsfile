@@ -35,11 +35,5 @@ pipeline {
                 sh 'docker run -d --name web-proj-ci-cd-container web-proj-ci-cd:latest'
             }
         }
-        // stage('Publish') {
-        //     steps {
-        //         echo 'Publishing on Docker Hub ....'
-        //         sh 'docker push docker.io/r3vv1l/web-proj-ci-cd:latest'
-        //     }
-        // }
     }
 }
