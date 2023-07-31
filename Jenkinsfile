@@ -4,6 +4,7 @@ pipeline {
     agent {
         docker {
             image 'node'//добавить второй образ
+            alwaysPull true
             args '-u root'
         }
     }
@@ -26,6 +27,7 @@ pipeline {
             agent {
                 docker {
                     image 'docker'
+                    alwaysPull true
                     args '-u root'
                 }
             }
