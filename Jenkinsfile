@@ -3,8 +3,7 @@
 pipeline {
     agent {
         docker {
-            image 'node'
-            image 'docker'
+            image 'node'//добавить второй образ
             args '-u root'
         }
     }
@@ -24,17 +23,23 @@ pipeline {
             }
         }
         stage('Deploy') {
+            agent {
+                docker {
+                    image 'docker'
+                    args '-u root'
+                }
+            }
             steps {
                 echo 'Deploying ....'
                 sh 'docker build -t web-proj-ci-cd:latest .'
                 sh 'docker run -d --name web-proj-ci-cd-container web-proj-ci-cd:latest'
             }
         }
-        stage('Publish') {
-            steps {
-                echo 'Publishing on Docker Hub ....'
-                sh 'docker push docker.io/r3vv1l/web-proj-ci-cd:latest'
-            }
-        }
+        // stage('Publish') {
+        //     steps {
+        //         echo 'Publishing on Docker Hub ....'
+        //         sh 'docker push docker.io/r3vv1l/web-proj-ci-cd:latest'
+        //     }
+        // }
     }
 }
