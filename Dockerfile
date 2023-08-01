@@ -1,11 +1,17 @@
-FROM node
+# Используем официальный образ Node.js
+FROM node:14-alpine
 
+# Устанавливаем зависимости
 WORKDIR /app
+COPY package*.json ./
+RUN npm install
 
+# Копируем исходный код
 COPY . .
 
-RUN npm i
+# Собираем приложение
+RUN npm run build
 
-EXPOSE 3000
-
-CMD [ "npm", "start" ]
+# Запускаем приложение на порту 5172
+EXPOSE 5172
+CMD ["npm", "start"]

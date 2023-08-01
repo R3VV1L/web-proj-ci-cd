@@ -3,12 +3,17 @@
 pipeline {
     agent {
         docker {
-            image 'node'
-            alwaysPull true
-            args '-u root'
+            image 'node:14-alpine'
+            args '-p 5172:5172'
         }
     }
-
+    environment {
+        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_USERNAME = credentials('r3vv1l')
+        DOCKER_PASSWORD = credentials('U=X)j!A1X-N')
+        DOCKER_IMAGE_NAME = 'web-proj-ci-cd'
+        DOCKER_IMAGE_TAG = 'v1'
+    }
     stages {
         stage('Build') {
             steps {
@@ -25,9 +30,9 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying ....'
-                sh 'npm install -g serve'
-                sh 'serve -s build -l http://62.109.15.160:5172'
+                sh "docker build -t ${params.DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG} ."
+                sh "docker push ${params.DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
+                sh 'docker run -d -p 5172:5172 ${params.DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}'
             }
         }
     }
