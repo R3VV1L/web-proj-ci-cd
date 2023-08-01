@@ -16,18 +16,7 @@ RUN npm run build
 EXPOSE 5172
 CMD ["npm", "start"]
 
-# Используем официальный образ Jenkins в Docker Hub
-FROM jenkins/jenkins:lts
-
-# Устанавливаем плагины Jenkins
-RUN /usr/local/bin/install-plugins.sh \
-    git \
-    workflow-aggregator \
-    docker-workflow \
-    blueocean \
-    credentials-binding
-
-# Устанавливаем Docker
+# Установка Docker
 USER root
 RUN apt-get update && \
     apt-get -y install apt-transport-https \
@@ -41,3 +30,15 @@ RUN apt-get update && \
     apt-get -y install docker-ce && \
     usermod -aG docker jenkins
 USER jenkins
+
+# Используем официальный образ Jenkins в Docker Hub
+FROM jenkins/jenkins:lts
+
+# Устанавливаем плагины Jenkins
+RUN /usr/local/bin/install-plugins.sh \
+    git \
+    workflow-aggregator \
+    docker-workflow \
+    blueocean \
+    credentials-binding
+
