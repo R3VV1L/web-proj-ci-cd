@@ -26,6 +26,12 @@ pipeline {
             }
         }
         stage('Deploy') {
+                agent {
+                docker {
+                    image 'docker'
+                    args '-u root'
+                }
+                }
             steps {
                 sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                 sh "docker run -d -p 5172:5172 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
