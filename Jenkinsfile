@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo 'Deploying ....'
                 sh 'npm install -g serve'
-                sh 'serve -s build -l 5172'
+                sh 'serve -s build -l http://62.109.15.160:5172'
             }
         }
     }
