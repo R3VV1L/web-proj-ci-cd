@@ -3,7 +3,7 @@
 pipeline {
     agent {
         docker {
-            image 'node'//добавить второй образ
+            image 'node'
             alwaysPull true
             args '-u root'
         }
@@ -24,17 +24,10 @@ pipeline {
             }
         }
         stage('Deploy') {
-            agent {
-                docker {
-                    image 'docker'
-                    alwaysPull true
-                    args '-u root'
-                }
-            }
             steps {
                 echo 'Deploying ....'
-                sh 'docker build -t web-proj-ci-cd:latest .'
-                sh 'docker run -d --name web-proj-ci-cd-container web-proj-ci-cd:latest'
+                sh 'npm install -g serve'
+                sh 'serve -s build -l 5172'
             }
         }
     }
