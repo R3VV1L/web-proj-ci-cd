@@ -8,9 +8,6 @@ pipeline {
         }
     }
     environment {
-        DOCKER_REGISTRY = 'docker.io'
-        DOCKER_USERNAME = credentials('r3vv1l')
-        DOCKER_PASSWORD = credentials('U=X)j!A1X-N')
         DOCKER_IMAGE_NAME = 'web-proj-ci-cd'
         DOCKER_IMAGE_TAG = 'v1'
     }
@@ -30,9 +27,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh "docker build -t ${params.DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG} ."
-                sh "docker push ${params.DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
-                sh 'docker run -d -p 5172:5172 ${params.DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}'
+                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                sh "docker run -d -p 5172:5172 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
             }
         }
     }
