@@ -15,6 +15,8 @@ pipeline {
                 echo 'Building ....'
                 sh 'npm install --legacy-peer-deps'
                 sh 'npm run build'
+                sh 'npm i docker'
+                sh 'docker start'
                 sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
             }
         }
