@@ -1,44 +1,23 @@
-# Используем официальный образ Node.js
-FROM node
+# Используем официальный образ Node.js в качестве базового образа
+FROM node:14-alpine
+
+# Устанавливаем рабочую директорию внутри контейнера
+WORKDIR /app
+
+# Копируем package.json и package-lock.json в рабочую директорию
+COPY package*.json ./
 
 # Устанавливаем зависимости
-WORKDIR /app
-COPY package*.json ./
 RUN npm install
 
-# Копируем исходный код
+# Копируем все файлы проекта в рабочую директорию
 COPY . .
 
 # Собираем приложение
 RUN npm run build
 
-# Запускаем приложение на порту 5172
+# Указываем порт, который будет прослушивать контейнер
 EXPOSE 5172
-CMD ["npm", "start"]
 
-# Установка Docker
-USER root
-RUN apt-get update && \
-    apt-get -y install apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg2 \
-    software-properties-common && \
-    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
-    apt-get update && \
-    apt-get -y install docker-ce && \
-    usermod -aG docker jenkins
-USER jenkins
-
-# Используем официальный образ Jenkins в Docker Hub
-FROM jenkins/jenkins:lts
-
-# Устанавливаем плагины Jenkins
-RUN /usr/local/bin/install-plugins.sh \
-    git \
-    workflow-aggregator \
-    docker-workflow \
-    blueocean \
-    credentials-binding
-
+# Запускаем приложение при старте контейнера
+CMD ["npm", "start", "--", "--port", "5172"]

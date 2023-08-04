@@ -17,6 +17,7 @@ pipeline {
                 echo 'Building ....'
                 sh 'npm install --legacy-peer-deps'
                 sh 'npm run build'
+                sh "docker build -t ${DOCKER_IMAGE_NAME} ."
             }
         }
         stage('Test') {
@@ -26,15 +27,9 @@ pipeline {
             }
         }
         stage('Deploy') {
-                agent {
-                docker {
-                    image 'docker'
-                    args '-u root'
-                }
-                }
             steps {
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
-                sh "docker run -d -p 5172:5172 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                // Запускаем контейнер с приложением
+                sh "docker run -d -p 5172:5172 ${DOCKER_IMAGE_NAME}"
             }
         }
     }
