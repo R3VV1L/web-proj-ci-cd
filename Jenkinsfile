@@ -1,5 +1,3 @@
-#!/usr/bin/env groovy
-
 pipeline {
     agent {
         docker {
@@ -17,7 +15,7 @@ pipeline {
                 echo 'Building ....'
                 sh 'npm install --legacy-peer-deps'
                 sh 'npm run build'
-                sh "docker build -t ${DOCKER_IMAGE_NAME} ."
+                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
             }
         }
         stage('Test') {
@@ -28,8 +26,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Запускаем контейнер с приложением
-                sh "docker run -d -p 5172:5172 ${DOCKER_IMAGE_NAME}"
+                echo 'Deploying ....'
+                sh "docker run -d -p 5172:5172 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
             }
         }
     }
