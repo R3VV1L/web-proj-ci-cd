@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:14-alpine'
-            args '-u root'
+            args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo 'Deploying ....'
                 sh 'docker build -t my-react-app .'
-                sh 'docker run -p 5172:5172 my-react-app'
+                sh 'docker run -p 5172:5172 -v /var/run/docker.sock:/var/run/docker.sock my-react-app'
             }
         }
     }
