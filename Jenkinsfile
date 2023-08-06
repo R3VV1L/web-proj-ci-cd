@@ -19,5 +19,12 @@ pipeline {
                 echo 'no test'
             }
         }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying ....'
+                sh 'docker build -t my-react-app .'
+                sh 'docker run -p 5172:5172 my-react-app'
+            }
+        }
     }
 }
