@@ -4,6 +4,9 @@ FROM node:14-alpine
 # Устанавливаем Docker внутри контейнера
 RUN apk update && apk add docker
 
+# Устанавливаем npm внутри контейнера
+RUN apk add npm
+
 # Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
